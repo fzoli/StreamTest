@@ -157,8 +157,9 @@ class SSLMJPEGClient {
                 
                 try {
                     int i;
-                    while((i = urlin.read()) != -1) {
-                        out.write(i);
+                    byte[] buffer = new byte[2048];
+                    while((i = urlin.read(buffer)) != -1) {
+                        out.write(buffer, 0, i);
                     }
                 }
                 catch (Exception ex) {
