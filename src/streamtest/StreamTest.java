@@ -30,7 +30,7 @@ class Server {
      * A szerver oldali socket feldolgozó.
      * Két dátumot küld a kliensnek 1 másodperc késéssel a kettő között, aztán fogad 1 dátumot.
      */
-    private class ServerProcess extends Process {
+    private class ServerProcess extends AbstractProcess {
 
         private final int pid;
         
@@ -84,7 +84,7 @@ class Client {
      * A kliens oldali socket feldolgozó.
      * Két dátumot fogad a szervertől, amit ki is ír a konzolra ID-vel együtt.
      */
-    private class ClientProcess extends Process {
+    private class ClientProcess extends AbstractProcess {
 
         public ClientProcess(Socket s) {
             super(s);
