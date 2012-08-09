@@ -2,6 +2,13 @@ package streamtest;
 
 /**
  * Az MJPEG stream teszt elindítója.
+ * 
+ * Paraméterek legegyszerűbb használata:
+ * - ssl szerver indítása: server ssl
+ * - nem ssl szerver indítása: server
+ * - ssl kliens indítása: ssl
+ * - nem ssl kliens indítása: 
+ * 
  * @author zoli
  */
 public class MJPEGStreamTester {
@@ -14,7 +21,8 @@ public class MJPEGStreamTester {
                 else test = new InsecureMJPEGStreamTest(); // egyébként nem biztonságos socket tesztelés
             }
             else { // ha 1 paraméter van, nem biztonságos socket tesztelés
-                test = new InsecureMJPEGStreamTest();
+                if (args[0].equals("ssl")) test = new SecureMJPEGStreamTest(); // és a paraméter 'ssl', akkor biztonságos socket tesztelése
+                else test = new InsecureMJPEGStreamTest(); // egyébként nem biztonságos socket tesztelése
             }
             if (args[0].equals("server")) test.startServer(); // ha az első paraméter 'server', akkor szerver indítása
             else test.startClient(); // egyébként a kliens indítása
