@@ -19,8 +19,8 @@ import net.sf.jipcam.axis.MjpegInputStream;
  */
 /**
  * A szerver oldali socket feldolgozó.
- * Minden kapcsolathoz megjelenít egy ablakot, amiben az MJPEG streamet megjeleníti. Az ablak bezárása után a kapcsolat bezáródik.
  * A kapcsolat létrejötte után a kliensnek elküldi a kapcsolat azonosítót és elkezdi olvasni a klienstől kapott MJPEG streamet.
+ * Minden kapcsolathoz megjelenít egy ablakot, amiben az MJPEG streamet megjeleníti. Az ablak bezárása után a kapcsolat bezáródik.
  */
 class MJPEGServerProcess extends AbstractProcess {
 
@@ -34,11 +34,18 @@ class MJPEGServerProcess extends AbstractProcess {
      */
     private JLabel lb = new JLabel(new ImageIcon());
     
+    /**
+     * @param s a kommunikációt lebonyolító socket.
+     * @param id a kapcsolatazonosító
+     */
     public MJPEGServerProcess(Socket s, int id) {
         super(s);
         this.pid = id;
     }
     
+    /**
+     * A külön szálban ez a metódus fut le.
+     */
     @Override
     public void run() {
         try {

@@ -18,10 +18,16 @@ import sun.misc.BASE64Encoder;
  */
 class MJPEGClientProcess extends AbstractProcess {
 
+    /**
+     * @param s A kommunikációt lebonyolító socket.
+     */
     public MJPEGClientProcess(Socket s) {
         super(s);
     }
 
+    /**
+     * A külön szálban ez a metódus fut le.
+     */
     @Override
     public void run() {
         try {

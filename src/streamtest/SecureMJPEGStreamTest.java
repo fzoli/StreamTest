@@ -12,10 +12,18 @@ import org.apache.commons.ssl.TrustMaterial;
  */
 class SSLMJPEGServer extends AbstractMJPEGServer {
 
+    /**
+     * SSL MJPEG socket szerver.
+     * @param port a szerver portja
+     */
     public SSLMJPEGServer(int port) throws Exception {
         super(port);
     }
 
+    /**
+     * SSL Server socket létrehozása.
+     * @param port szerver portja
+     */
     @Override
     protected ServerSocket createServerSocket(int port) throws Exception {
         SSLServer server = new SSLServer(); // SSL szerver socket létrehozására kell
@@ -36,10 +44,18 @@ class SSLMJPEGServer extends AbstractMJPEGServer {
  */
 class SSLMJPEGClient extends AbstractMJPEGClient {
 
+    /**
+     * SSL MJPEG socket kliens.
+     * @param port a szerver portja
+     */
     public SSLMJPEGClient(int port) throws Exception {
         super(port);
     }
 
+    /**
+     * SSL Socket létrehozása és kapcsolódás a szerverhez.
+     * @param port szerver portja
+     */
     @Override
     protected Socket createSocket(int port) throws Exception {
         SSLClient client = new SSLClient(); // SSL kliens socket létrehozására kell

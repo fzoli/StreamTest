@@ -17,6 +17,9 @@ abstract class AbstractProcess implements Runnable {
         this.s = s;
     }
 
+    /**
+     * @return kommunikációt lebonyolító socket
+     */
     protected Socket getSocket() {
         return s;
     }

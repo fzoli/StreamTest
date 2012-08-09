@@ -39,6 +39,9 @@ class Server {
             this.pid = id;
         }
         
+        /**
+         * A külön szálban ez a metódus fut le.
+         */
         @Override
         public void run() {
             try {
@@ -90,6 +93,9 @@ class Client {
             super(s);
         }
 
+        /**
+         * A külön szálban ez a metódus fut le.
+         */
         @Override
         public void run() {
             try {

@@ -20,10 +20,17 @@ abstract class AbstractMJPEGClient {
         s = createSocket(port);
     }
     
+    /**
+     * A socket kliens futtatása.
+     */
     public void run() {
         new Thread(new MJPEGClientProcess(s)).start(); // feldolgozás új szálban
     }
     
+    /**
+     * Socket létrehozása és kapcsolódás a szerverhez.
+     * @param port szerver portja
+     */
     protected abstract Socket createSocket(int port) throws Exception;
     
 }
