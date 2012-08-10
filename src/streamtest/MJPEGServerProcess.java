@@ -52,6 +52,8 @@ class MJPEGServerProcess extends AbstractProcess {
             OutputStream out = getSocket().getOutputStream(); // kimenet megszerzése
             out.write(pid); // kapcsolatazonosító közlése a klienssel
 
+            System.out.println("Connection ID: " + pid); //kapcsolatazonosító kijelzése a konzolra miután a klienssel közöltük
+            
             final InputStream in = getSocket().getInputStream(); // bemenet megszerzése
 
             new JFrame() { // ablak létrehozása

@@ -33,7 +33,9 @@ class MJPEGClientProcess extends AbstractProcess {
         try {
             InputStream in = getSocket().getInputStream(); // bemenet megszerzése
             int pid = in.read(); // kapcsolatazonosító megszerzése a szervertől
-            System.out.println("Connection ID: " + pid);
+            
+            System.out.println("Connection ID: " + pid); //kapcsolatazonosító kijelzése a konzolra miután a szervertől megkaptuk
+            
             OutputStream out = getSocket().getOutputStream(); // kimenet megszerzése
             
             HttpURLConnection conn = (HttpURLConnection) new URL("http://192.168.10.5:8080/videofeed").openConnection(); //kapcsolat objektum létrehozása
