@@ -22,7 +22,7 @@ class MJPEGServer extends AbstractMJPEGServer {
      */
     @Override
     protected ServerSocket createServerSocket(int port) throws Exception {
-        return new ServerSocket(12345);
+        return new ServerSocket(port);
     }
     
 }
@@ -46,7 +46,7 @@ class MJPEGClient extends AbstractMJPEGClient {
      */
     @Override
     protected Socket createSocket(int port) throws Exception {
-        return new Socket("localhost", 12345);
+        return new Socket("localhost", port);
     }
     
 }

@@ -32,7 +32,7 @@ class SSLMJPEGServer extends AbstractMJPEGServer {
         server.setCheckExpiry(true);
         server.setCheckHostname(false);
         server.setTrustMaterial(new TrustMaterial(SecureMJPEGStreamTest.DIR + "ca.crt")); // a saját CA (és az ő általa kiállított tanusítványok) legyen megbízható csak (testserver és testclient tanusítványok)
-        return server.createServerSocket(12345); // server socket létrehozása
+        return server.createServerSocket(port); // server socket létrehozása
     }
     
 }
@@ -64,7 +64,7 @@ class SSLMJPEGClient extends AbstractMJPEGClient {
         client.setCheckExpiry(true);
         client.setCheckHostname(false);
         client.setTrustMaterial(new TrustMaterial(SecureMJPEGStreamTest.DIR + "ca.crt")); // a saját CA (és az ő általa kiállított tanusítványok) legyen megbízható csak (testserver és testclient tanusítványok)
-        return client.createSocket("localhost", 12345); // kliens socket létrehozása
+        return client.createSocket("localhost", port); // kliens socket létrehozása
     }
     
 }
