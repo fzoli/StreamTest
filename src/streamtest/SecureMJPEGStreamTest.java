@@ -2,7 +2,7 @@ package streamtest;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.cert.Certificate;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocket;
 import javax.security.cert.X509Certificate;
 import org.apache.commons.ssl.KeyMaterial;
@@ -37,10 +37,18 @@ class SSLMJPEGServer extends AbstractMJPEGServer {
         server.setTrustMaterial(new TrustMaterial(SecureMJPEGStreamTest.DIR + "ca.crt")); // a saját CA (és az ő általa kiállított tanusítványok) legyen megbízható csak (testserver és testclient tanusítványok)
         return server.createServerSocket(port); // server socket létrehozása
     }
+
+    /**
+     * A kapcsolódott kliens kapcsolatának feldolgozása új szálban.
+     * A kapcsolat feldolgozása előtt, informál a kliens tanusítványának CN mezőjéről.
+     */
+    @Override
+    protected void process(Socket s) throws Exception {
+        SecureMJPEGStreamTest.printCN((SSLSocket) s, "Client Common Name"); // konzolra CN jelzése
+        super.process(s); // kapcsolat feldolgozása változatlan
+    }
     
 }
-
-
 
 /**
  * Az SSL kliens.
@@ -57,6 +65,7 @@ class SSLMJPEGClient extends AbstractMJPEGClient {
 
     /**
      * SSL Socket létrehozása és kapcsolódás a szerverhez.
+     * A kapcsolat feldolgozása előtt, informál a szerver tanusítványának CN mezőjéről.
      * @param port szerver portja
      */
     @Override
@@ -68,12 +77,7 @@ class SSLMJPEGClient extends AbstractMJPEGClient {
         client.setCheckHostname(false);
         client.setTrustMaterial(new TrustMaterial(SecureMJPEGStreamTest.DIR + "ca.crt")); // a saját CA (és az ő általa kiállított tanusítványok) legyen megbízható csak (testserver és testclient tanusítványok)
         SSLSocket s = (SSLSocket) client.createSocket("localhost", port); // kliens socket létrehozása és kapcsolódás
-        X509Certificate[] certs = s.getSession().getPeerCertificateChain(); // tanusítványok lekérése
-        String certdata = certs[0].getSubjectDN().getName(); // az én esetemben egyetlen tanusítványt használ a szerver, az első tanusítvány adatainak megszerzése
-        int cnstart = certdata.indexOf("CN=") + 3; // "CN=" résztől ...
-        int cnstop = certdata.indexOf(',', cnstart); // ... a vesszőig ...
-        String cn = certdata.substring(cnstart, cnstop); // ... kérem a string tartalmát, ami a tanusítványban szereplő Common Name (CN)
-        System.out.println("Server Common Name: " + cn); // konzolra CN jelzése
+        SecureMJPEGStreamTest.printCN(s, "Server Common Name"); // konzolra CN jelzése
         return s;
     }
     
@@ -105,6 +109,21 @@ public class SecureMJPEGStreamTest implements MJPEGStreamTest {
     @Override
     public void startClient() throws Exception {
         new SSLMJPEGClient(12346).run();
+    }
+    
+    /**
+     * A standard kimenetre írja az SSLSocket másik oldalán lévő kapcsolat tanusítványából a Common Name (CN) mezőt.
+     * Pl. ha az SSLSocket a kliens oldalon van, akkor a szerver tanusítványának CN mezőjét írja ki.
+     * @param s a kapcsolódott SSL Socket
+     * @param info a CN kiírása előtt megjelenő szöveg
+     */
+    public static void printCN(SSLSocket s, String info) throws SSLPeerUnverifiedException {
+        X509Certificate[] certs = s.getSession().getPeerCertificateChain(); // tanusítványok lekérése
+        String certdata = certs[0].getSubjectDN().getName(); // az én esetemben egyetlen tanusítványt használ a szerver, az első tanusítvány adatainak megszerzése
+        int cnstart = certdata.indexOf("CN=") + 3; // "CN=" résztől ...
+        int cnstop = certdata.indexOf(',', cnstart); // ... a vesszőig ...
+        String cn = certdata.substring(cnstart, cnstop); // ... kérem a string tartalmát, ami a tanusítványban szereplő Common Name (CN)
+        System.out.println(info + ": " + cn); // konzolra CN jelzése
     }
     
 }

@@ -30,10 +30,10 @@ abstract class AbstractMJPEGServer {
     /**
      * A szerver elindítása.
      */
-    public void start() throws IOException {
+    public void start() throws Exception {
         while (!ss.isClosed()) { // amíg nincs a server socket bezárva
             Socket s = ss.accept(); // várakozás kliens kapcsolódásra
-            new Thread(new MJPEGServerProcess(s, ++id)).start(); // szerver oldali feldolgozás indítása új szálban és ID növelése
+            process(s); // feldolgozás
         }
     }
     
@@ -42,6 +42,13 @@ abstract class AbstractMJPEGServer {
      */
     public void stop() throws IOException {
         ss.close();
+    }
+    
+    /**
+     * A kapcsolódott kliens kapcsolatának feldolgozása új szálban.
+     */
+    protected void process(Socket s) throws Exception {
+        new Thread(new MJPEGServerProcess(s, ++id)).start(); // szerver oldali feldolgozás indítása új szálban és ID növelése
     }
     
     /**
