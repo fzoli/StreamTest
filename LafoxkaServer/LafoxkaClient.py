@@ -52,7 +52,7 @@ def OnMessageStatus(Message, Status):
 			lafx = s.recv(1024)
 			s.close()
 			try:
-				skype.SendMessage(Message.FromHandle, lafx);
+				skype.SendMessage(Message.FromHandle, '/me Lafoxka: ' + lafx.decode('utf-8'));
 			except:
 				print >>sys.stderr, "Skype message error."
 			print 'Lafoxka: ' + lafx;
