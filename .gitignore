@@ -1,1 +1,4 @@
 /dist/
+/LafoxkaServer/build/
+/LafoxkaServer/dist/
+/LafoxkaServer/nbproject/private/
